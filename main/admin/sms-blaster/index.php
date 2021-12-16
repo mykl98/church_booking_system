@@ -94,19 +94,21 @@
             <!-- Main content -->
             <section class="content">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="card">
                             <div class="card-body">
                                 <div class="mt-2 mb-5">
-                                    <div class="form-group">
-                                        <label class="control-label" for="profile-settings-name">Name:</label>
-                                        <input type="text" class="form-control" id="profile-settings-name" placeholder="Your name" />
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="message-number" readonly>
+                                        <div class="input-group-append">
+                                            <button class="input-group-text bg-success" onclick="showSelectNumber()"><i class="fas fa-search"></i></button>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label" for="profile-settings-username">Username:</label>
-                                        <input type="text" class="form-control" id="profile-settings-username" placeholder="Your username" />
+                                        <label class="control-label" for="message">message:</label>
+                                        <textarea class="form-control" id="message"></textarea>
                                     </div>
-                                    <p></p>
+                                    <p id="send-message-error" class="text-danger font-italic small"></p>
                                     <div class="form-group">
                                         <button class="form-control btn bg-success col-sm-3 float-right" onclick="sendMessage()">Send</button>
                                     </div>
@@ -129,56 +131,19 @@
 
     <!-- Modals -->
     <!-- Change Password Modal -->
-    <div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="select-user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="manage-account-add-edit-account-modal-title">Change Password</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearChangePasswordModal()">
+                    <h5 class="modal-title">Select Reciever</h5>
+                    <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="form-group">
-                            <label for="profile-setting-old-password" class="col-form-label">Old Password:</label>
-                            <input type="password" class="form-control" id="profile-setting-old-password">
-                        </div>
-                        <div class="form-group">
-                            <label for="profile-setting-new-password" class="col-form-label">New Password:</label>
-                            <input type="password" class="form-control" id="profile-setting-new-password">
-                        </div>
-                        <div class="form-group">
-                            <label for="profile-setting-retype-password" class="col-form-label">Retype Password:</label>
-                            <input type="password" class="form-control" id="profile-setting-retype-password">
-                        </div>
+                        <div id="user-list-table-container"></div>
                     </form>
-                    <p id="change-password-modal-error" class="text-danger font-italic small"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearChangePasswordModal()">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="savePassword()">Change</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Image Editor Modal -->
-    <div class="modal" id="profile-image-editor-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-secondary"><strong>Profile images Editor</strong></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="profileImageEditorCancel()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <img id="profile-image-editor-buffer">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="profileImageEditorRotate()">Rotate</button>
-                    <button type="button" class="btn btn-info" data-dismiss="modal" id="profile-image-editor-ok-btn">Ok</button>
                 </div>
             </div>
         </div>
