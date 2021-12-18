@@ -11,6 +11,7 @@ $(document).on('hidden.bs.modal', '.modal', function () {
 
 $(".modal").on("hidden.bs.modal",function(){
     $(this).find("form").trigger("reset");
+    $('.modal-backdrop').remove();
 })
 
 var baseUrl = $("#base-url").text();
