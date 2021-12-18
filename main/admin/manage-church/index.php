@@ -100,7 +100,9 @@
                                 <button class="btn btn-sm bg-success float-right" onclick="addChurch()"><span class="fa fa-plus"></span> Add Church</button>
                             </div>
                             <div class="card-body">
-                                <div id="church-table-container"></div>
+                                <div class="table-responsive">
+                                    <div id="church-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

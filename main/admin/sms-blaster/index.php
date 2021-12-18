@@ -141,9 +141,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <div class="table-responsive">
                         <div id="user-list-table-container"></div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

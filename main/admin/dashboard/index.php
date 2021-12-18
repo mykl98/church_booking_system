@@ -154,7 +154,9 @@
                                     <h3 class="card-title">Top 10 Current Log</h3>
                                 </div>
                                 <div class="card-body">
-                                    <div id="log-table-container"></div>
+                                    <div class="table-responsive">
+                                        <div id="log-table-container"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

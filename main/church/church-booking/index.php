@@ -101,7 +101,9 @@
                                 <h3 class="card-title">Booking List</h3>
                             </div>
                             <div class="card-body">
-                                <div id="booking-table-container"></div>
+                                <div class="table-responsive">
+                                    <div id="booking-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

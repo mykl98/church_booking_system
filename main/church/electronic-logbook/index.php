@@ -102,7 +102,9 @@
                                 <button class="btn btn-sm bg-success float-right mr-2" onclick="scanQr()"><span class="fa fa-qrcode"></span> Scan QR</button>
                             </div>
                             <div class="card-body">
-                                <div id="log-table-container"></div>
+                                <div class="table-responsive">
+                                    <div id="log-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

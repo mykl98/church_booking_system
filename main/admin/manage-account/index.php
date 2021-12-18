@@ -102,7 +102,9 @@
                                 <button class="btn btn-sm bg-success float-right" onclick="addAccount()"><span class="fa fa-plus"></span> Add Account</button>
                             </div>
                             <div class="card-body">
-                                <div id="account-table-container"></div>
+                                <div class="table-responsive">
+                                    <div id="account-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

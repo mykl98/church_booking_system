@@ -103,7 +103,9 @@
                                 <div id="church-select-container"></div>
                             </div>
                             <div class="card-body">
-                                <div id="log-table-container"></div>
+                                <div class="table-responsive">
+                                    <div id="log-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

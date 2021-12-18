@@ -102,7 +102,9 @@
                                 <button class="btn btn-sm bg-success float-right" onclick="addBooking()"><span class="fa fa-plus"></span> Add Booking</button>
                             </div>
                             <div class="card-body">
-                                <div id="booking-table-container"></div>
+                                <div class="table-responsive">
+                                    <div id="booking-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
