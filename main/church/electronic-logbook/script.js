@@ -107,6 +107,9 @@ function renderLogList(data){
 
 function scanQr(){
     $("#qr-reader-modal").modal("show");
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "qr-reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
 }
 
 function getUserDetail(qr){
@@ -248,8 +251,5 @@ var prevDecodedText;
 function onScanSuccess(decodedText, decodedResult) {
     getUserDetail(decodedText);
     $("#qr-reader-modal").modal("hide");
+    html5QrcodeScanner.clear();
 }
-
-var html5QrcodeScanner = new Html5QrcodeScanner(
-    "qr-reader", { fps: 10, qrbox: 250 });
-html5QrcodeScanner.render(onScanSuccess);
