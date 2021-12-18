@@ -168,9 +168,7 @@
                     </button>
                 </div>
                 <div class="modal-body d-flex justify-content-center align-items-center">
-                    <form>
-                        <div id="qr-reader" style="width:500px"></div>
-                    </form>
+                    <div id="qr-reader" style="width:500px"></div>
                 </div>
             </div>
         </div>
