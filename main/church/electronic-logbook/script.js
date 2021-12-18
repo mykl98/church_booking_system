@@ -7,7 +7,6 @@ $(document).ready(function(){
 
 $(document).on('hidden.bs.modal', '.modal', function () {
     $('.modal.show').length && $(document.body).addClass('modal-open');
-    $('.modal-backdrop').remove();
 });
 
 $(".modal").on("hidden.bs.modal",function(){
