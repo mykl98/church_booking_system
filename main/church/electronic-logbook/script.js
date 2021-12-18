@@ -248,6 +248,7 @@ var prevDecodedtext;
 function onScanSuccess(decodedText, decodedResult) {
     getUserDetail(decodedText);
     $("#qr-reader-modal").modal("hide");
+    html5QrcodeScanner.clear();
 }
 
 var html5QrcodeScanner = new Html5QrcodeScanner(
