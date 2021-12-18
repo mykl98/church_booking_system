@@ -104,7 +104,7 @@
                             <input type="submit" class="btn btn-success btn-block p-2 mb-1" value="Login">
                         </div>
                     </form>
-                    <p class="text-secondary">Don't have an account? <a href="signup.php">Sign Up</a></p>
+                    <p class="text-secondary text-wrap">Don't have an account? <a href="signup.php">Sign Up</a></p>
                 </div>
             </div>
         </div>

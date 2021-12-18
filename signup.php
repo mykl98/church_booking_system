@@ -180,7 +180,7 @@
                             <input type="submit" class="btn btn-success btn-block p-2 mb-1" value="Sign Up">
                         </div>
                     </form>
-                    <p class="text-secondary">Already have an account? <a href="index.php">Login</a></p>
+                    <p class="text-secondary text-wrap">Already have an account? <a href="index.php">Login</a></p>
                 </div>
             </div>
         </div>
