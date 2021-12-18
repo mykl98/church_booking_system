@@ -2,11 +2,11 @@
     if($_POST){
         include_once "../../../system/backend/config.php";
 
-        function getAccountList(){
+        function getAccountList($church){
             global $conn;
             $data = array();
             $table = "account";
-            $sql = "SELECT * FROM `$table` ORDER by idx DESC";
+            $sql = "SELECT * FROM `$table` WHERE churchidx='$church' ORDER by idx DESC";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     while($row=mysqli_fetch_array($result)){
@@ -17,9 +17,6 @@
                             $value -> name = $row["name"];
                             $value -> username = $row["username"];
                             $value -> access = $row["access"];
-                            $value -> deptaccess = $row["deptaccess"];
-                            $value -> status = $row["status"];
-
                             array_push($data,$value);
                         }
                     }
@@ -32,8 +29,9 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
-            echo getAccountList();
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+            $church = $_SESSION["church"];
+            echo getAccountList($church);
         }else{
             echo "Access Denied!";
         }

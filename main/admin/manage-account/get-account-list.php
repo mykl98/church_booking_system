@@ -31,7 +31,7 @@
                             $value -> name = $row["name"];
                             $value -> username = $row["username"];
                             $value -> access = $row["access"];
-                            $value -> church = getChurchName($row["church"]);
+                            $value -> church = getChurchName($row["churchidx"]);
                             array_push($data,$value);
                         }
                     }

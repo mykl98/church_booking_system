@@ -3,7 +3,7 @@
     session_start();
     $idx = $_SESSION["loginidx"];
 
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
     
     }else{
         header("location:".$baseUrl."/index.php");
@@ -16,7 +16,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Super Amdin | Profile Settings</title>
+    <title>Amdin | Profile Settings</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -53,7 +53,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="" data-toggle="dropdown" href="#">
-                        <img id="global-user-image" class="rounded-circle" src="../../../../../system/images/blank-profile.png" width="40px" height="40px">
+                        <img id="global-user-image" class="rounded-circle" src="<?php echo $baseUrl;?>/system/images/blank-profile.png" width="40px" height="40px">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right mt-13" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="../profile-setting"><i class="fa fa-user pr-2"></i> Profile</a>
@@ -69,8 +69,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <img id="global-client-logo" src="<?php echo $baseUrl;?>/system/images/logo.png" class="rounded-circle" width="100px">
-                <p id="global-department-name" class="">Super Admin</p>
+                <p id="global-department-name" class="">Admin</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>
@@ -102,7 +101,7 @@
                                 <div class="mt-2 mb-5">
                                     <div class="form-group text-center">
                                         <input type="file" accept="image/*" onchange="loadProfileImage(event)" style="display:none;" id="load-profile-picture-btn">
-                                        <img id="profile-settings-picture" src="../../../../../system/images/blank-profile.png" onclick="$('#load-profile-picture-btn').click()" width="150" >
+                                        <img id="profile-settings-picture" src="<?php echo $baseUrl;?>/system/images/blank-profile.png" onclick="$('#load-profile-picture-btn').click()" width="150" >
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label" for="profile-settings-name">Name:</label>

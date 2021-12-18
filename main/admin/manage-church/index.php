@@ -147,7 +147,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="add-edit-department-modal-save-button" onclick="saveChurch()">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="saveChurch()">Save</button>
                 </div>
             </div>
         </div>

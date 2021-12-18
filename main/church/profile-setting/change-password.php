@@ -29,7 +29,7 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
             $idx = sanitize($_SESSION["loginidx"]);
             $old = sanitize($_POST["old"]);
             $new = sanitize($_POST["new"]);

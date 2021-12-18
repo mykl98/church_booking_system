@@ -3,7 +3,7 @@
     session_start();
     $idx = $_SESSION["loginidx"];
 
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
     
     }else{
         header("location:".$baseUrl."/index.php");
@@ -16,7 +16,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Super Admin | Manage Account</title>
+    <title>Church | Manage Account</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -68,8 +68,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <img id="global-client-logo" src="<?php echo $baseUrl;?>/system/images/logo.png" class="rounded-circle" width="100px">
-                <p id="global-department-name" class="">Super Admin</p>
+                <p class="">Church</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>
@@ -102,7 +101,7 @@
                                 <button class="btn btn-sm bg-success float-right" onclick="addAccount()"><span class="fa fa-plus"></span> Add Account</button>
                             </div>
                             <div class="card-body">
-                                <div id="manage-account-table-container"></div>
+                                <div id="account-table-container"></div>
                             </div>
                         </div>
                     </div>
@@ -131,9 +130,6 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div align="center">
-                        <img id="account-image" class="rounded-circle" width="150" src="<?php echo $baseUrl;?>/system/images/blank-profile.png">
-                    </div>
                     <div class="form-group">
                         <label for="account-name" class="col-form-label">Name:</label>
                         <input type="text" class="form-control" id="account-name">
@@ -142,29 +138,8 @@
                         <label for="account-username" class="col-form-label">Username:</label>
                         <input type="text" class="form-control" id="account-username">
                     </div>
-                    <div class="form-group">
-                        <label for="account-access" class="col-form-label">Access:</label>
-                        <select class="form-control" id="account-access" onchange="accessChange()">
-                            <option value="super-admin">Super Admin</option>
-                            <option value="admin">Admin</option>
-                            <option value="department">Department</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="account-deptaccess-container">
-                        <label for="account-deptaccess" class="col-form-label">Department Access:</label>
-                        <input type="text" class="form-control" id="account-deptaccess" readonly>
-                    </div>
-                    <div id="account-department-select-container"></div>
-                    <div id="account-designation-select-container"></div>
-                    <div class="form-group">
-                        <label for="account-status" class="col-form-label">Status:</label>
-                        <select class="form-control" id="account-status">
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </div>
                 </form>
-                <p id="save-account-error" class="text-danger font-italic small"></p>
+                <p id="add-edit-account-modal-error" class="text-danger font-italic small"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearAddEditAccountModal()">Close</button>
@@ -173,27 +148,6 @@
         </div>
     </div>
 </div>
-
-    <div class="modal fade" id="view-password-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-secondary"><strong>View Password</strong></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="view-password" readonly>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 <!-- Logout Modal -->
     <div class="modal fade" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

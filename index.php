@@ -25,11 +25,20 @@
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_array($result);
-                    $_SESSION["isLoggedIn"] = "true";
-                    $_SESSION["loginidx"] = $row["idx"];
-                    $_SESSION["access"] = $row["access"];
-                    header("location:main");
-                    exit();
+                    $status = $row["status"];
+                    $access = $row["access"];
+                    if($status == "processing" && $access == "user"){
+                        $_SESSION["lastidx"] = $row["idx"];
+                        header("location:otp.php");
+                        exit();
+                    }else{
+                        $_SESSION["isLoggedIn"] = "true";
+                        $_SESSION["loginidx"] = $row["idx"];
+                        $_SESSION["access"] = $row["access"];
+                        $_SESSION["church"] = $row["churchidx"];
+                        header("location:main");
+                        exit();
+                    }
                 }else{
                     $error = "*Username or Password is invalid!";
                 }
@@ -91,12 +100,11 @@
                         </div>
 
                         <div class="form-group">
-                            <a href="#">
-                                <small class="text-danger font-italic"><?php echo $error;?></small>
-                            </a>
+                            <small class="text-danger font-italic"><?php echo $error;?></small>
                             <input type="submit" class="btn btn-success btn-block p-2 mb-1" value="Login">
                         </div>
                     </form>
+                    <p class="text-secondary">Don't have an account? <a href="signup.php">Sign Up</a></p>
                 </div>
             </div>
         </div>

@@ -2,10 +2,10 @@
     if($_POST){
         include_once "../../../system/backend/config.php";
 
-        function getAccountCount(){
+        function getAccountCount($church){
             global $conn;
             $table = "account";
-            $sql = "SELECT idx FROM `$table`";
+            $sql = "SELECT idx FROM `$table` WHERE churchidx='$church'";
             if($result=mysqli_query($conn,$sql)){
                 return mysqli_num_rows($result);
             }else{
@@ -13,10 +13,10 @@
             }
         }
 
-        function getDepartmentCount(){
+        function getChurchScheduleCount($church){
             global $conn;
-            $table = "departments";
-            $sql = "SELECT idx FROM `$table`";
+            $table = "schedule";
+            $sql = "SELECT idx FROM `$table` WHERE churchidx='$church'";
             if($result=mysqli_query($conn,$sql)){
                 return mysqli_num_rows($result);
             }else{
@@ -24,10 +24,10 @@
             }
         }
 
-        function getDocumentCount(){
+        function getUnprocessedBookingCount($church){
             global $conn;
-            $table = "document";
-            $sql = "SELECT idx FROM `$table`";
+            $table = "booking";
+            $sql = "SELECT idx FROM `$table` WHERE status='processing' && churchidx='$church'";
             if($result=mysqli_query($conn,$sql)){
                 return mysqli_num_rows($result);
             }else{
@@ -35,10 +35,10 @@
             }
         }
 
-        function getLogCount(){
+        function getBookingTotalCount($church){
             global $conn;
-            $table = "system-log";
-            $sql = "SELECT idx FROM `$table`";
+            $table = "booking";
+            $sql = "SELECT idx FROM `$table` WHERE churchidx='$church'";
             if($result=mysqli_query($conn,$sql)){
                 return mysqli_num_rows($result);
             }else{
@@ -46,22 +46,23 @@
             }
         }
 
-        function getDashboardDetails(){
+        function getDashboardDetails($church){
             global $vaccinee,$first,$complete;
             $data = array();
             $value = new \StdClass();
-            $value -> account = getAccountCount();
-            $value -> department = getDepartmentCount();
-            $value -> document = getDocumentCount();
-            $value -> log = getLogCount();
+            $value -> account = getAccountCount($church);
+            $value -> church = getChurchScheduleCount($church);
+            $value -> unprocessed = getUnprocessedBookingCount($church);
+            $value -> total = getBookingTotalCount($church);
             array_push($data,$value);
             $data = json_encode($data);
             return "true*_*" . $data;
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
-            echo getDashboardDetails();
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+            $church = $_SESSION["church"];
+            echo getDashboardDetails($church);
         }else{
             echo "Access Denied!";
         }

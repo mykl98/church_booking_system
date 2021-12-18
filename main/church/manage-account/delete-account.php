@@ -9,12 +9,12 @@
             if(mysqli_query($conn,$sql)){
                 return "true*_*Successfully deleted this account.";
             }else{
-                return "System Failed!";
+                return "System Error!";
             }
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
             $idx = sanitize($_POST["idx"]);
             echo deleteAccount($idx);
         }else{

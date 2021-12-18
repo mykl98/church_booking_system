@@ -1,11 +1,10 @@
 <?php
     include_once "../../../system/backend/config.php";
     session_start();
-    $idx = $_SESSION["loginidx"];
-
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
     
     }else{
+        session_destroy();
         header("location:".$baseUrl."/index.php");
         exit();
     }
@@ -16,7 +15,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Super Admin | Dashboard</title>
+    <title>Church | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -52,7 +51,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="" data-toggle="dropdown" href="#">
-                        <img id="global-user-image" class="rounded-circle" src="../../../../../system/images/blank-profile.png" width="40px" height="40px">
+                        <img id="global-user-image" class="rounded-circle" src="<?php echo $baseUrl;?>/system/images/blank-profile.png" width="40px" height="40px">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right mt-13" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="../profile-setting"><i class="fa fa-user pr-2"></i> Profile</a>
@@ -68,8 +67,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <img id="global-client-logo" src="../../../system/images/logo.png" class="rounded-circle" width="100px">
-                <p id="global-department-name" class="">Super Admin</p>
+                <p class="">Church</p>
             </a>
             <?php include "../side-nav-bar.html"?>
         </aside>
@@ -100,7 +98,7 @@
                             <!-- small box -->
                             <div class="small-box bg-success">
                                 <div class="inner">
-                                    <h3 id="dashboard-account-number">0</h3>
+                                    <h3 id="dashboard-account">0</h3>
                                     <p>Accounts</p>
                                 </div>
                                 <div class="icon">
@@ -111,41 +109,40 @@
                         </div>
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
-                            <div class="small-box bg-danger">
-                                <div class="inner">
-                                    <h3 id="dashboard-department-number">0</h3>
-                                    <p>Departments</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-institution"></i>
-                                </div>
-                                <a href="../manage-department" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <!-- small box -->
                             <div class="small-box bg-warning">
                                 <div class="inner">
-                                    <h3 id="dashboard-document-number">0</h3>
-                                    <p>Documents</p>
+                                    <h3 id="dashboard-unprocessed">0</h3>
+                                    <p>Unprocessed Bookings</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-folder"></i>
+                                    <i class="fas fa-list-alt"></i>
                                 </div>
-                                <a href="../document-manager" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="../church-booking" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-info">
                                 <div class="inner">
-                                    <h3 id="dashboard-log-number">0</h3>
-                                    <p>System Logs</p>
+                                    <h3 id="dashboard-total">0</h3>
+                                    <p>Total Bookings</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-archive"></i>
+                                    <i class="fas fa-book"></i>
                                 </div>
-                                <a href="../log-manager" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="../church-booking" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Top 10 Current Log</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div id="log-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

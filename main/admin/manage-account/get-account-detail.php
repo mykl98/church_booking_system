@@ -14,7 +14,7 @@
                     $value -> name = $row["name"];
                     $value -> username = $row["username"];
                     $value -> access = $row["access"];
-                    $value -> church = $row["church"];
+                    $value -> church = $row["churchidx"];
                     array_push($data,$value);
                 }
                 $data = json_encode($data);

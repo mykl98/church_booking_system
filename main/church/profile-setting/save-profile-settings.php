@@ -14,7 +14,7 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
             $idx = $_SESSION["loginidx"];
             $image = sanitize($_POST["image"]);
             $name = sanitize($_POST["name"]);

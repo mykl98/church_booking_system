@@ -3,29 +3,21 @@ $whitelist = array('127.0.0.1', "::1");
 
 if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
     $servername = "localhost";
-	$username = "u528264240_kauswaganldn";
+	$username = "u528264240_cbs";
 	$password = "Skooltech_113012";
-	$dbname = "u528264240_kauswaganldn";
+	$dbname = "u528264240_cbs";
 	$conn = new mysqli($servername, $username, $password, $dbname);
-	$baseUrl = "https://kauswagan.gov.ph/admin";
+	$baseUrl = "https://raptorapps.xyz/cbs";
 }else{
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
 	$dbname = "cbs";
 	$conn = new mysqli($servername, $username, $password, $dbname);
-	$baseUrl = "http://localhost/kauswaganldn";
+	$baseUrl = "http://localhost/churchbookingsystem";
 }
 
-function mGetDate(){
-	date_default_timezone_set("Asia/Manila");
-	return date("Y-m-d");
-}
-
-function mGetTime(){
-	date_default_timezone_set("Asia/Manila");
-	return date("h:i:sa");
-}
+date_default_timezone_set("Asia/Manila");
 
 function sanitize($input){
 	global $conn;
@@ -42,6 +34,16 @@ function saveLog($log){
 
 function generateCode($length){
 	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$charactersLength = strlen($characters);
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, $charactersLength - 1)];
+	}
+	return $randomString;
+}
+
+function generateOTP($length){
+	$characters = '0123456789';
 	$charactersLength = strlen($characters);
 	$randomString = '';
 	for ($i = 0; $i < $length; $i++) {
