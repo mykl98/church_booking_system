@@ -246,14 +246,8 @@ function logout(){
 
 var prevDecodedtext;
 function onScanSuccess(decodedText, decodedResult) {
-    if(prevDecodedtext != decodedText){
-        prevDecodedtext = decodedText;
-        getUserDetail(decodedText);
-        $("#qr-reader-modal").modal("hide");
-        setTimeout(function(){
-            prevDecodedtext = "";
-        },5000)
-    }
+    getUserDetail(decodedText);
+    $("#qr-reader-modal").modal("hide");
 }
 
 var html5QrcodeScanner = new Html5QrcodeScanner(
