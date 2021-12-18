@@ -181,7 +181,6 @@ function qrLogin(){
                     if(resp[0] == "true"){
                         $("#qr-scan-modal").modal("hide");
                         getLogList();
-                        prevDecodedText = "";
                     }else if(resp[0] == "false"){
                         alert(resp[1]);
                     } else{
@@ -211,7 +210,6 @@ function qrLogout(){
                     var resp = response.split("*_*");
                     if(resp[0] == "true"){
                         $("#qr-scan-modal").modal("hide");
-                        prevDecodedText = "";
                         getLogList();
                     }else if(resp[0] == "false"){
                         alert(resp[1]);
@@ -248,14 +246,8 @@ function logout(){
 
 var prevDecodedText;
 function onScanSuccess(decodedText, decodedResult) {
-    if(prevDecodedText !== decodedText){
-        prevDecodedText = decodedText;
-        getUserDetail(decodedText);
-        $("#qr-reader-modal").modal("hide");
-        setTimeout(function(){
-            prevDecodedText = "";
-        },10000);
-   }
+    getUserDetail(decodedText);
+    $("#qr-reader-modal").modal("hide");
 }
 
 var html5QrcodeScanner = new Html5QrcodeScanner(
