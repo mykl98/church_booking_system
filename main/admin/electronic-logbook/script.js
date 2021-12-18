@@ -140,7 +140,7 @@ function renderLogList(data){
 }
 
 function clearLogs(idx){
-    if(confirm("Are you sure you want to Clear the entire log history got this church?\nThis Action cannot be undone!")){
+    if(confirm("Are you sure you want to Clear the entire log history of this church?\nThis Action cannot be undone!")){
         $.ajax({
             type: "POST",
             url: "clear-log.php",

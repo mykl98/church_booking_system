@@ -4,8 +4,9 @@
 
         function getBookingList($userIdx,$churchIdx){
             global $conn;
-            $date = date("Y/m/d");
+            $date = date("Y-m-d");
             $data = array();
+            $table = "booking";
             $sql = "SELECT * FROM `$table` WHERE date='$date' && useridx='$userIdx' && churchidx='$churchIdx' && status='approved'";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
@@ -26,7 +27,7 @@
         function getUserDetail($qr,$church){
             global $conn;
             $data = array();
-            $table = "user";
+            $table = "account";
             $sql = "SELECT * FROM `$table` WHERE qr='$qr' ORDER by idx DESC";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){

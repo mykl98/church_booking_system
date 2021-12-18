@@ -5,6 +5,14 @@ $(document).ready(function(){
     },100)
 })
 
+$(document).on('hidden.bs.modal', '.modal', function () {
+    $('.modal.show').length && $(document.body).addClass('modal-open');
+});
+
+$(".modal").on("hidden.bs.modal",function(){
+    $(this).find("form").trigger("reset");
+})
+
 var baseUrl = $("#base-url").text();
 var userIdx;
 
@@ -70,7 +78,6 @@ function renderLogList(data){
     var markUp = '<table id="log-table" class="table table-striped table-bordered table-sm">\
                         <thead>\
                             <tr>\
-                                <th>Church</th>\
                                 <th>User</th>\
                                 <th>Date</th>\
                                 <th>Time</th>\
@@ -86,7 +93,6 @@ function renderLogList(data){
             activity = '<span class="badge badge-danger">Logout</span>';
         }
         markUp += '<tr>\
-                        <td>'+list.church+'</td>\
                         <td>'+list.user+'</td>\
                         <td>'+list.date+'</td>\
                         <td>'+list.time+'</td>\
@@ -96,29 +102,6 @@ function renderLogList(data){
     markUp += '</tbody></table>';
     $("#log-table-container").html(markUp);
     $("#log-table").DataTable();
-}
-
-function clearLogs(idx){
-    if(confirm("Are you sure you want to Clear the entire log history got this church?\nThis Action cannot be undone!")){
-        $.ajax({
-            type: "POST",
-            url: "clear-log.php",
-            dataType: 'html',
-            data: {
-                dummy:"dummy"
-            },
-            success: function(response){
-                var resp = response.split("*_*");
-                if(resp[0] == "true"){
-                    getLogList();
-                }else if(resp[0] == "false"){
-                    alert(resp[1]);
-                } else{
-                    alert(response);
-                }
-            }
-        });
-    }
 }
 
 function scanQr(){
@@ -195,6 +178,7 @@ function qrLogin(){
                 success: function(response){
                     var resp = response.split("*_*");
                     if(resp[0] == "true"){
+                        $("#qr-scan-modal").modal("hide");
                         getLogList();
                     }else if(resp[0] == "false"){
                         alert(resp[1]);
@@ -224,6 +208,7 @@ function qrLogout(){
                 success: function(response){
                     var resp = response.split("*_*");
                     if(resp[0] == "true"){
+                        $("#qr-scan-modal").modal("hide");
                         getLogList();
                     }else if(resp[0] == "false"){
                         alert(resp[1]);
@@ -258,15 +243,9 @@ function logout(){
     });
 }
 
-var lastResult, countResults = 0;
-
 function onScanSuccess(decodedText, decodedResult) {
-    if (decodedText !== lastResult) {
-        ++countResults;
-        lastResult = decodedText;
-        getUserDetail(decodedText);
-        //console.log(`Scan result ${decodedText}`, decodedResult);
-    }
+    getUserDetail(decodedText);
+    $("#qr-reader-modal").modal("hide");
 }
 
 var html5QrcodeScanner = new Html5QrcodeScanner(

@@ -39,7 +39,7 @@
                 if(mysqli_num_rows($result) > 0){
                     while($row=mysqli_fetch_array($result)){
                         $value = new \StdClass();
-                        $value -> church = getChurchName($row["church"]);
+                        $value -> church = getChurchName($row["churchidx"]);
                         $value -> user = getAccountName($row["useridx"]);
                         $value -> date = $row["date"];
                         $value -> time = $row["time"];

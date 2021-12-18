@@ -98,9 +98,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Log List</h3>
-                                <button class="btn btn-sm bg-danger float-right" onclick="clearLogs()"><span class="fa fa-trash"></span> Clear Logs</button>
                                 <button class="btn btn-sm bg-success float-right mr-2" onclick="scanQr()"><span class="fa fa-qrcode"></span> Scan QR</button>
-                                <div id="church-select-container"></div>
                             </div>
                             <div class="card-body">
                                 <div id="log-table-container"></div>
@@ -166,8 +164,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div id="qr-reader" style="width:500px"></div>
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <form>
+                        <div id="qr-reader" style="width:500px"></div>
+                    </form>
                 </div>
             </div>
         </div>
