@@ -244,11 +244,16 @@ function logout(){
     });
 }
 
-var prevDecodedtext;
+var prevDecodedText;
 function onScanSuccess(decodedText, decodedResult) {
-    getUserDetail(decodedText);
-    $("#qr-reader-modal").modal("hide");
-    html5QrcodeScanner.clear();
+    if(prevDecodedText !== decodedText){
+        prevDecodedText = decodedText;
+        getUserDetail(decodedText);
+        $("#qr-reader-modal").modal("hide");
+        setTimeout(function(){
+            prevDecodedText = "";
+        },1000);
+   }
 }
 
 var html5QrcodeScanner = new Html5QrcodeScanner(
