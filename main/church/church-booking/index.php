@@ -6,6 +6,7 @@
     if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
     
     }else{
+        session_destroy();
         header("location:".$baseUrl."/index.php");
         exit();
     }
