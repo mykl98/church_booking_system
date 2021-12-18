@@ -51,6 +51,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <p id="global-user-name" class="mr-2 mt-2">Michael Martin G. Abellana</p>
+                    <p class="d-none" id="base-url"><?php echo $baseUrl;?></p>
                 </li>
                 <li class="nav-item">
                     <a class="" data-toggle="dropdown" href="#">

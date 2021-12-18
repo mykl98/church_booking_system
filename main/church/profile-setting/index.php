@@ -16,7 +16,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Amdin | Profile Settings</title>
+    <title>Church | Profile Settings</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -50,6 +50,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <p id="global-user-name" class="mr-2 mt-2">Michael Martin G. Abellana</p>
+                    <p id="base-url" class="d-none"><?php echo $baseUrl;?></p>
                 </li>
                 <li class="nav-item">
                     <a class="" data-toggle="dropdown" href="#">
@@ -69,7 +70,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p id="global-department-name" class="">Admin</p>
+                <p class="">Church</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>

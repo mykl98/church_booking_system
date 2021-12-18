@@ -1,5 +1,6 @@
 var updateProfileSettingsFlag = false;
 var profileSettingsIdx;
+var baseUrl = $("#base-url").text();
 
 $(document).ready(function(){
     getProfileSettings();
