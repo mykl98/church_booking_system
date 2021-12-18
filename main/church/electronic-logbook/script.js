@@ -107,9 +107,6 @@ function renderLogList(data){
 
 function scanQr(){
     $("#qr-reader-modal").modal("show");
-    var html5QrcodeScanner = new Html5QrcodeScanner(
-        "qr-reader", { fps: 10, qrbox: 250 });
-    html5QrcodeScanner.render(onScanSuccess);
 }
 
 function getUserDetail(qr){
@@ -247,9 +244,27 @@ function logout(){
     });
 }
 
-var prevDecodedText;
-function onScanSuccess(decodedText, decodedResult) {
-    getUserDetail(decodedText);
-    $("#qr-reader-modal").modal("hide");
-    html5QrcodeScanner.clear();
+var prevDecodedText = "";
+
+function onScanError(errorMessage) {
+    // handle on error condition, with error message
+    alert(errorMessage);
+    setTimeout(function(){
+        prevDecodedText = "";
+    },10000);
 }
+
+function onScanSuccess(decodedText, decodedResult) {
+    if(prevDecodedText !== decodedText){
+        prevDecodedText = decodedText;
+        getUserDetail(decodedText);
+        $("#qr-reader-modal").modal("hide");
+        setTimeout(function(){
+            prevDecodedText = "";
+        },10000);
+    }
+}
+
+var html5QrcodeScanner = new Html5QrcodeScanner(
+    "qr-reader", { fps: 10, qrbox: 250 });
+html5QrcodeScanner.render(onScanSuccess);
