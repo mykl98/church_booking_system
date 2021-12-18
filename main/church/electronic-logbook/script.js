@@ -181,6 +181,7 @@ function qrLogin(){
                     if(resp[0] == "true"){
                         $("#qr-scan-modal").modal("hide");
                         getLogList();
+                        prevDecodedText = "";
                     }else if(resp[0] == "false"){
                         alert(resp[1]);
                     } else{
@@ -210,6 +211,7 @@ function qrLogout(){
                     var resp = response.split("*_*");
                     if(resp[0] == "true"){
                         $("#qr-scan-modal").modal("hide");
+                        prevDecodedText = "";
                         getLogList();
                     }else if(resp[0] == "false"){
                         alert(resp[1]);
@@ -252,7 +254,7 @@ function onScanSuccess(decodedText, decodedResult) {
         $("#qr-reader-modal").modal("hide");
         setTimeout(function(){
             prevDecodedText = "";
-        },1000);
+        },10000);
    }
 }
 
