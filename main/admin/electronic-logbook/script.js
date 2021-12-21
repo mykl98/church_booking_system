@@ -111,7 +111,6 @@ function renderLogList(data){
     var markUp = '<table id="log-table" class="table table-striped table-bordered table-sm">\
                         <thead>\
                             <tr>\
-                                <th>Church</th>\
                                 <th>User</th>\
                                 <th>Date</th>\
                                 <th>Time</th>\
@@ -127,7 +126,6 @@ function renderLogList(data){
             activity = '<span class="badge badge-danger">Logout</span>';
         }
         markUp += '<tr>\
-                        <td>'+list.church+'</td>\
                         <td>'+list.user+'</td>\
                         <td>'+list.date+'</td>\
                         <td>'+list.time+'</td>\
