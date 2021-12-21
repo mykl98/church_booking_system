@@ -89,7 +89,7 @@
             $table = "account";
             $otp = generateOTP(6);
             $qr = generateCode(100);
-            $sql = "INSERT INTO `$table` (name,address,username,password,access,qr,otp,status) VALUES ('$name','$address','$username','$password','user','$qr','$otp','processing')";
+            $sql = "INSERT INTO `$table` (name,address,username,password,number,access,qr,otp,status) VALUES ('$name','$address','$username','$password','$number','user','$qr','$otp','processing')";
             if(mysqli_query($conn,$sql)){
                 $last_id = $conn->insert_id;
                 $_SESSION["lastidx"] = $last_id;

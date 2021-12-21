@@ -5,8 +5,8 @@
         function getUserList(){
             global $conn;
             $data = array();
-            $table = "user";
-            $sql = "SELECT * FROM `$table` ORDER by idx DESC";
+            $table = "account";
+            $sql = "SELECT * FROM `$table` WHERE access='user' ORDER by idx DESC";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     while($row=mysqli_fetch_array($result)){

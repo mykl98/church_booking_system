@@ -65,9 +65,9 @@
 
         function sendMessage($number,$message){
             global $conn;
-            $table = "user";
+            $table = "account";
             if($number == "all"){
-                $sql = "SELECT number FROM `$table`";
+                $sql = "SELECT number FROM `$table` WHERE access='user'";
                 if($result=mysqli_query($conn,$sql)){
                     if(mysqli_num_rows($result) > 0){
                         sendResponse("true*_*Successfully sent the message.");
@@ -82,7 +82,7 @@
                     return "System Error!";
                 }
             }else{
-                sendMessage($number,$message);
+                sendMsg($number,$message);
                 return "true*_*Successfully sent the message";
             }
         }
