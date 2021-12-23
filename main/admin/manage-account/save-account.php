@@ -7,7 +7,7 @@ if($_POST){
         $table = "account";
         if($idx == ""){
             if($access == "church"){
-                $sql = "INSERT INTO `$table` (name,username,password,access,church) VALUES ('$name','$username','123456','$access','$church')";
+                $sql = "INSERT INTO `$table` (name,username,password,access,churchidx) VALUES ('$name','$username','123456','$access','$church')";
             }else{
                 $sql = "INSERT INTO `$table` (name,username,password,access) VALUES ('$name','$username','123456','$access')";
             }
@@ -18,9 +18,9 @@ if($_POST){
             }
         }else{
             if($access == "church"){
-                $sql = "UPDATE `$table` SET name='$name',username='$username',access='$access',church='$church' WHERE idx='$idx'";
+                $sql = "UPDATE `$table` SET name='$name',username='$username',access='$access',churchidx='$church' WHERE idx='$idx'";
             }else{
-                $sql = "UPDATE `$table` SET name='$name',username='$username',access='$access' WHERE idx='$idx'";
+                $sql = "UPDATE `$table` SET name='$name',username='$username',access='$access',churchidx='$church' WHERE idx='$idx'";
             }
             if(mysqli_query($conn,$sql)){
                 return "true*_*Successfully updated " . $name . "'s account in account list.";

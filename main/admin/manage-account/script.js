@@ -209,6 +209,10 @@ function saveAccount(){
     var access = $("#account-access").val();
     var church = $("#account-church").val();
 
+    if(access == "admin"){
+        church = "";
+    }
+
     var error = "";
     if(name == "" || name == undefined){
         error = "*Name field should not be empty.";
