@@ -35,6 +35,8 @@ function renderProfileSettings(data){
             $("#global-user-image").attr("src", list.image);
         }
         $("#profile-settings-name").val(list.name);
+        $("#profile-settings-number").val(list.number);
+        $("#profile-settings-address").val(list.address);
         $("#profile-settings-username").val(list.username);
         $("#global-user-name").text(list.name);
     })
@@ -43,11 +45,17 @@ function renderProfileSettings(data){
 function saveProfileSettings(){
     userImage = $("#profile-settings-picture").attr("src");
     userName = $("#profile-settings-name").val();
+    userNumber = $("#profile-settings-number").val();
+    userAddress = $("#profile-settings-address").val();
     userUsername = $("#profile-settings-username").val();
 
-    var error;
+    var error = "";
     if(userName == "" || userName == undefined){
         error = "*Name field should not be empty.";
+    }else if(userNumber == "" || userNumber == undefined || userNumber.length != 11){
+        error = "*Invalid Phone Number.";
+    }else if(userAddress == "" || userAddress == undefined){
+        error = "*Address field should not be empty.";
     }else if(userUsername == "" || userUsername == undefined){
         error = "*Username field should not be empty.";
     }else{
@@ -58,6 +66,8 @@ function saveProfileSettings(){
             data: {
                 image: userImage,
                 name: userName,
+                number:userNumber,
+                address:userAddress,
                 username: userUsername
             },
             success: function(response){
@@ -73,6 +83,7 @@ function saveProfileSettings(){
             }
         });
     }
+    $("#profile-settings-error").text(error);
 }
 
 function profileChangePassword(){

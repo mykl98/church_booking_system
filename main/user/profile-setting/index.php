@@ -110,10 +110,18 @@
                                         <input type="text" class="form-control" id="profile-settings-name" placeholder="Your name" />
                                     </div>
                                     <div class="form-group">
+                                        <label class="control-label" for="profile-settings-number">Phone Number:</label>
+                                        <input type="number" class="form-control" id="profile-settings-number" placeholder="Your Phone Number" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="profile-settings-Address">Address:</label>
+                                        <textarea class="form-control" id="profile-settings-address" placeholder="Your Address"></textarea>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label" for="profile-settings-username">Username:</label>
                                         <input type="text" class="form-control" id="profile-settings-username" placeholder="Your username" />
                                     </div>
-
+                                    <p id="profile-settings-error" class="text-danger font-italic small"></p>
                                     <div class="form-group">
                                         <button class="form-control btn bg-danger text-white col-sm-4 float-right" onclick="profileChangePassword()">Change Password</button>
                                         <button class="form-control btn bg-success col-sm-3 float-right" onclick="saveProfileSettings()">Save</button>

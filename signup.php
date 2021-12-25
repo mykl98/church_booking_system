@@ -9,6 +9,30 @@
     $password = "";
     $retype = "";
 
+    function checkIfContainNumbers($string){
+        if (strcspn($string, '0123456789') != strlen($string)){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
+    function checkIfContainUppercase($string){
+        if (strcspn($string, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') != strlen($string)){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
+    function checkIfContainsSpecialChar($string){
+        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $string)){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
     function sendMsg($number,$message){
         global $conn,$shortCode,$passPhrase,$appId,$appSecret;
         $url = "https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/".$shortCode."/requests?passphrase=".$passPhrase."&app_id=".$appId."&app_secret=".$appSecret;
@@ -73,6 +97,8 @@
         $check = checkUserName($username);
         if($name == ""){
             $error = "*Name field should not be empty!";
+        }else if(checkIfContainNumbers($name) == "true"){
+            $error = "Name should not contain numbers!";
         }else if($address == ""){
             $error = "*Address field should not be empty!";
         }else if($number == "" || strlen($number) != 11){
@@ -81,6 +107,14 @@
             $error = "*Username field should not be empty!";
         }else if($password == ""){
             $error = "*Password field should not be empty!";
+        }else if(checkIfContainNumbers($password) == "false"){
+            $error = "*Password should contain numbers.";
+        }else if(checkIfContainUppercase($password) == "false"){
+            $error = "*Password should contain uppercase characters.";
+        }else if(checkIfContainsSpecialChar($password) == "false"){
+            $error = "*Password should contain special characters.";
+        }else if(strlen($password) < 8){
+            $error = "*Password should be atleast 8 characters long.";
         }else if($password != $retype){
             $error = "*Password and retype password does not match!";
         }else if($check != "true"){
@@ -154,7 +188,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-phone"></i></span>
                             </div>
-                            <input type="text" name="number" value="<?php echo $number;?>" class="form-control mt-0" placeholder="Phone Number">
+                            <input type="number" name="number" value="<?php echo $number;?>" class="form-control mt-0" placeholder="Phone Number">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">

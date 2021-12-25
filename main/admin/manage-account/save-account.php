@@ -2,8 +2,19 @@
 if($_POST){
     include_once "../../../system/backend/config.php";
 
+    function checkIfContainNumbers($string){
+        if (strcspn($string, '0123456789') != strlen($string)){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
     function saveAccount($idx,$name,$username,$access,$church){
         global $conn;
+        if(checkIfContainNumbers($name) == "true"){
+            return "Invalid name, it contains numbers.";
+        }
         $table = "account";
         if($idx == ""){
             if($access == "church"){

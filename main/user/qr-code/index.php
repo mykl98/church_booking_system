@@ -85,7 +85,7 @@
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="<?php echo $baseUrl;?>">Home</a></li>
                                 <li class="breadcrumb-item active">QR Code</li>
                             </ol>
                         </div><!-- /.col -->
@@ -99,6 +99,7 @@
                         <div class="card">
                             <div class="card-body text-center">
                                 <canvas id="qr-canvas-container"></canvas>
+                                <p class="text-wrap">This is for contact tracing that will also serve as your Personal QR Code upon entering the church.</p>
                             </div>
                         </div>
                     </div>

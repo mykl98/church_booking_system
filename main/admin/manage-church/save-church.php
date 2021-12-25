@@ -2,8 +2,19 @@
 if($_POST){
     include_once "../../../system/backend/config.php";
 
+    function checkIfContainNumbers($string){
+        if (strcspn($string, '0123456789') != strlen($string)){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
     function saveChurch($idx,$name,$address,$description){
         global $conn;
+        if(checkIfContainNumbers($name) == "true"){
+            return "Invalid church name, it contains numbers.";
+        }
         $table = "church";
         if($idx == ""){
             $sql = "INSERT INTO `$table` (name,address,description) VALUES ('$name','$address','$description')";
