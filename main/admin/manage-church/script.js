@@ -146,7 +146,6 @@ function renderEditChurch(data){
     lists.forEach(function(list){
         $("#church-name").val(list.name);
         $("#church-address").val(list.address);
-        $("#church-description").val(list.description);
     })
     $("#add-edit-church-modal-title").text("Edit Church Details");
     $("#add-edit-church-modal").modal("show");
@@ -155,14 +154,11 @@ function renderEditChurch(data){
 function saveChurch(){
     var name = $("#church-name").val();
     var address = $("#church-address").val();
-    var description = $("#church-description").val();
     var error = "";
     if(name == "" || name == undefined){
         error = "*Name field should not be empty.";
     }else if(address == "" || address == undefined){
         error = "*Address field should not be empty";
-    }else if(description == "" || description == undefined){
-        error = "*Description field should not be empty.";
     }else{
 
         $.ajax({
@@ -173,7 +169,6 @@ function saveChurch(){
                 idx:churchIdx,
                 name:name,
                 address:address,
-                description:description
             },
             success: function(response){
                 var resp = response.split("*_*");

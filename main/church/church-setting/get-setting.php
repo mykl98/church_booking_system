@@ -2,30 +2,29 @@
     if($_POST){
         include_once "../../../system/backend/config.php";
 
-        function getChurchDetail($idx){
+        function getSetting($idx){
             global $conn;
             $data = array();
             $table = "church";
-            $sql = "SELECT * FROM `$table` WHERE idx='$idx'";
+            $sql = "SELECT description FROM `$table` WHERE idx='$idx'";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_array($result);
                     $value = new \StdClass();
-                    $value -> name = $row["name"];
-                    $value -> address = $row["address"];
+                    $value -> description = $row["description"];
                     array_push($data,$value);
                 }
                 $data = json_encode($data);
                 return "true*_*" . $data;
             }else{
-                return "System Failed!";
+                return "System Error!";
             }
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" || $_SESSION["access"] == "admin"){
-            $idx = sanitize($_POST["idx"]);
-            echo getChurchDetail($idx);
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+            $church = $_SESSION["church"];
+            echo getSetting($church);
         }else{
             echo "Access Denied";
         }

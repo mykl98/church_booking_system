@@ -1,7 +1,9 @@
 <?php
     include_once "../../../system/backend/config.php";
     session_start();
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "admin"){
+    $idx = $_SESSION["loginidx"];
+
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
     
     }else{
         session_destroy();
@@ -15,7 +17,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin | Manage Church</title>
+    <title>Church | Church Setting</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -47,7 +49,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <p id="global-user-name" class="mr-2 mt-2">Michael Martin G. Abellana</p>
-                    <p id="base-url" class="d-none"><?php echo $baseUrl?></p>
+                    <p id="base-url" class="d-none"><?php echo $baseUrl;?></p>
                 </li>
                 <li class="nav-item">
                     <a class="" data-toggle="dropdown" href="#">
@@ -67,7 +69,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p id="global-department-name" class="">Admin</p>
+                <p class="">Church</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>
@@ -79,12 +81,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Manage Church</h1>
+                            <h1 class="m-0 text-dark">Manage Accounts</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="<?php echo $baseUrl;?>">Home</a></li>
-                                <li class="breadcrumb-item active">Manage Church</li>
+                                <li class="breadcrumb-item active">Church Setting</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -93,15 +95,20 @@
             <!-- Main content -->
             <section class="content">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-sm-5 col-md-5">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Church List</h3>
-                                <button class="btn btn-sm bg-success float-right" onclick="addChurch()"><span class="fa fa-plus"></span> Add Church</button>
+                                <h3 class="card-title">Church Description</h3>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <div id="church-table-container"></div>
+                                <div class="mt-2 mb-5">
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="setting-description"></textarea>
+                                    </div>
+                                    <p id="setting-error" class="text-danger font-italic small"></p>
+                                    <div class="form-group">
+                                        <button class="form-control btn bg-success col-sm-3 float-right" onclick="saveSetting()">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -120,38 +127,37 @@
     <!-- ./wrapper -->
 
 <!-- Modals -->
-    <!-- Add Edit Church Modals -->
-    <div class="modal fade" id="add-edit-church-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="add-edit-church-modal-title">Add New Church</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="church-name" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" id="church-name">
-                        </div>
-                        <div class="form-group">
-                            <label for="church-address" class="col-form-label">Address:</label>
-                            <textarea class="form-control" id="church-address"></textarea>
-                        </div>
-                    </form>
-                    <p id="add-edit-church-modal-error" class="text-danger font-italic small"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveChurch()">Save</button>
-                </div>
+<div class="modal fade" id="add-edit-account-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-edit-account-modal-title">Create New Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearAddEditAccountModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="account-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="account-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="account-username" class="col-form-label">Username:</label>
+                        <input type="text" class="form-control" id="account-username">
+                    </div>
+                </form>
+                <p id="add-edit-account-modal-error" class="text-danger font-italic small"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearAddEditAccountModal()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveAccount()">Save</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Logout Modal -->
+<!-- Logout Modal -->
     <div class="modal fade" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

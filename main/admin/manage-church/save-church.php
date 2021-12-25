@@ -10,21 +10,21 @@ if($_POST){
         }
     }
 
-    function saveChurch($idx,$name,$address,$description){
+    function saveChurch($idx,$name,$address){
         global $conn;
         if(checkIfContainNumbers($name) == "true"){
             return "Invalid church name, it contains numbers.";
         }
         $table = "church";
         if($idx == ""){
-            $sql = "INSERT INTO `$table` (name,address,description) VALUES ('$name','$address','$description')";
+            $sql = "INSERT INTO `$table` (name,address) VALUES ('$name','$address')";
             if(mysqli_query($conn,$sql)){
                 return "true*_*Successfully added " . $name . "'s to department list.";
             }else{
                 return "System Error!";// . mysqli_error($conn);
             }
         }else{
-            $sql = "UPDATE `$table` SET name='$name',address='$address',description='$description' WHERE idx='$idx'";
+            $sql = "UPDATE `$table` SET name='$name',address='$address' WHERE idx='$idx'";
             if(mysqli_query($conn,$sql)){
                 return "true*_*";
             }else{
@@ -38,9 +38,8 @@ if($_POST){
         $idx = sanitize($_POST["idx"]);
         $name = sanitize($_POST["name"]);
         $address = sanitize($_POST["address"]);
-        $description = sanitize($_POST["description"]);
-        if(!empty($name) && !empty($address) && !empty($description)){
-            echo saveChurch($idx,$name,$address,$description);
+        if(!empty($name) && !empty($address)){
+            echo saveChurch($idx,$name,$address);
         }else{
             echo "Network Error!";
         }
