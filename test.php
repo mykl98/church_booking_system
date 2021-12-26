@@ -1,3 +1,3 @@
 <?php
-echo date("h:m:i:as")
+echo date("h:m:i a")
 ?>
