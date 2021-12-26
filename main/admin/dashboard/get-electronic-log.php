@@ -17,7 +17,6 @@
         }
 
         function getAccountName($idx){
-            saveLog($idx);
             global $conn;
             $name = "";
             $table = "account";
