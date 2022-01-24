@@ -109,6 +109,8 @@ function renderBookingList(data){
         var button = "";
         if(status == "approved"){
             status = '<span class="badge badge-success">Approved</span>';
+        }else if(status == "declined"){
+            status = '<span class="badge badge-danger">Declined</span>';
         }else if(status == "processing"){
             status = '<span class="badge badge-warning">Processing</span>';
             button = '<button class="btn btn-success btn-sm" onclick="editBooking(\''+ list.idx +'\')"><i class="fa fa-pencil"></i></button>\

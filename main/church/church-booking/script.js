@@ -103,9 +103,12 @@ function renderBookingList(data){
         var button = "";
         if(status == "approved"){
             status = '<span class="badge badge-success">Approved</span>';
+        }else if(status == "declined"){
+            status = '<span class="badge badge-danger">Declined</span>';
         }else if(status == "processing"){
             status = '<span class="badge badge-warning">Processing</span>';
-            button = '<button class="btn btn-success btn-sm" onclick="approveBooking(\''+ list.idx +'\')"><i class="fa fa-thumbs-up"></i></button>';
+            button = '<button class="btn btn-success btn-sm" onclick="approveBooking(\''+ list.idx +'\')"><i class="fa fa-thumbs-up"></i></button>\
+                      <button class="btn btn-danger btn-sm" onclick="declineBooking(\''+ list.idx +'\')"><i class="fa fa-thumbs-down"></i></button>';
         }
         markUp += '<tr>\
                         <td>'+list.name+'</td>\
@@ -130,6 +133,30 @@ function approveBooking(idx){
             data: {
                 idx:idx,
                 name:name
+            },
+            success: function(response){
+                var resp = response.split("*_*");
+                if(resp[0] == "true"){
+                    getBookingList();
+                    alert(resp[1]);
+                }else if(resp[0] == "false"){
+                    alert(resp[1]);
+                } else{
+                    alert(response);
+                }
+            }
+        });
+    }
+}
+
+function declineBooking(idx){
+    if(confirm("Are you sure you want to decline this booking?")){
+        $.ajax({
+            type: "POST",
+            url: "decline-booking.php",
+            dataType: 'html',
+            data: {
+                idx:idx
             },
             success: function(response){
                 var resp = response.split("*_*");
