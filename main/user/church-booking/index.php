@@ -4,7 +4,7 @@
     $idx = $_SESSION["loginidx"];
 
     if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "user"){
-    
+        $minDate = date("Y-m-d");
     }else{
         session_destroy();
         header("location:".$baseUrl."/index.php");
@@ -146,7 +146,7 @@
                         </div>
                         <div class="form-group">
                             <label for="booking-date" class="col-form-label">Date:</label>
-                            <input type="date" class="form-control" id="booking-date">
+                            <input type="date" class="form-control" min="<?php echo $minDate;?>" id="booking-date">
                         </div>
                         <div class="form-group">
                             <label for="booking-time" class="col-form-label">Time:</label>
