@@ -140,7 +140,7 @@
                             <label for="qr-address" class="col-form-label">Address:</label>
                             <textarea class="form-control" id="qr-address" readonly></textarea>
                         </div>
-                        <div id="qr-booking-table-container"></div>
+                        <!--div id="qr-booking-table-container"></div-->
                         <p id="qr-scan-modal-error" class="text-danger font-italic small"></p>
                     </form>
                 </div>

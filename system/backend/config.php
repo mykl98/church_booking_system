@@ -1,7 +1,7 @@
 <?php
 $whitelist = array('127.0.0.1', "::1");
 
-if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+/*if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
     $servername = "localhost";
 	$username = "u528264240_cbs";
 	$password = "Skooltech_113012";
@@ -15,7 +15,14 @@ if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
 	$dbname = "cbs";
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	$baseUrl = "http://localhost/churchbookingsystem";
-}
+}*/
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "cbs";
+$conn = new mysqli($servername, $username, $password, $dbname);
+$baseUrl = "http://192.168.1.3/churchbookingsystem";
 
 date_default_timezone_set("Asia/Manila");
 
