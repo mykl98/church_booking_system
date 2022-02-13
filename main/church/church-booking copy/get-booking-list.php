@@ -30,6 +30,7 @@
                             $value -> name = getUserName($row["useridx"]);
                             $value -> type = $row["type"];
                             $value -> date = $row["date"];
+                            $value -> time = $row["time"];
                             $value -> status = $row["status"];
                             array_push($data,$value);
                         }

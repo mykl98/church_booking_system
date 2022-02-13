@@ -26,11 +26,9 @@ $(".modal").on("hidden.bs.modal",function(){
 })
 
 var baseUrl = $("#base-url").text();
-var bookingIdx;
 
 getUserDetails();
 getBookingList();
-renderCalendar();
 
 function getUserDetails(){
     $.ajax({
@@ -76,8 +74,6 @@ function getBookingList(){
 		success: function(response){
 			var resp = response.split("*_*");
 			if(resp[0] == "true"){
-                calendar.destroy();
-                renderCalendar();
 				renderBookingList(resp[1]);
 			}else if(resp[0] == "false"){
 				alert(resp[1]);
@@ -89,96 +85,60 @@ function getBookingList(){
 }
 
 function renderBookingList(data){
-    //alert(data);
     var lists = JSON.parse(data);
-    var event = {};
+    var markUp = '<table id="booking-table" class="table table-striped table-bordered table-sm">\
+                        <thead>\
+                            <tr>\
+                                <th>Name</th>\
+                                <th>Type</th>\
+                                <th>Date</th>\
+                                <th>Time</th>\
+                                <th>Status</th>\
+                                <th></th>\
+                            </tr>\
+                        </thead>\
+                        <tbody>';
     lists.forEach(function(list){
-        var date = new Date(list.date);
-        var d = date.getDate();
-	    var m = date.getMonth();
-	    var y = date.getFullYear();
         var status = list.status;
-        if(status == "processing"){
-            event = {
-                title: list.name,
-                color: '#f0ad4e',
-                start: new Date(y,m,d),
-                allDay: true,
-                extendedProps: {
-                    idx:list.idx,
-                    type: list.type,
-                    status: list.status
-                },
-            }
-        }else if(status == "approved"){
-            event = {
-                title: list.name,
-                color: '#5cb85c',
-                start: new Date(y,m,d),
-                allDay: true,
-                extendedProps: {
-                    idx:list.idx,
-                    type: list.type,
-                    status: list.status
-                },
-            }
+        var button = "";
+        if(status == "approved"){
+            status = '<span class="badge badge-success">Approved</span>';
         }else if(status == "declined"){
-            event = {
-                title: list.name,
-                color: '#d9534f',
-                start: new Date(y,m,d),
-                allDay: true,
-                extendedProps: {
-                    idx:list.idx,
-                    type: list.type,
-                    status: list.status
-                },
-            }
+            status = '<span class="badge badge-danger">Declined</span>';
+        }else if(status == "processing"){
+            status = '<span class="badge badge-warning">Processing</span>';
+            button = '<button class="btn btn-success btn-sm" onclick="approveBooking(\''+ list.idx +'\')"><i class="fa fa-thumbs-up"></i></button>\
+                      <button class="btn btn-danger btn-sm" onclick="declineBooking(\''+ list.idx +'\')"><i class="fa fa-thumbs-down"></i></button>';
         }
-        calendar.addEvent(event);
-    });
-}
-
-function renderCalendar(){
-    var calendarContainer = document.getElementById("calendar");
-
-    calendar = new FullCalendar.Calendar(calendarContainer,{
-        selectable: true,
-        select: function(arg){
-            var church = $("#booking-church").val();
-            calendar.unselect();
-            if(church != "all"){
-                addBooking(arg["start"],church);
-            }else{
-                alert("Please select church!");
-            }
-        },
-        eventClick: function(arg){
-            bookingIdx = arg.event.extendedProps.idx;
-            $("#view-name").val(arg.event.title);
-            $("#view-type").val(arg.event.extendedProps.type);
-            $("#view-status").val(arg.event.extendedProps.status);
-            $("#view-booking-modal").modal("show");
-        },
+        markUp += '<tr>\
+                        <td>'+list.name+'</td>\
+                        <td>'+list.type+'</td>\
+                        <td>'+list.date+'</td>\
+                        <td>'+list.time+'</td>\
+                        <td>'+status+'</td>\
+                        <td>'+button+'</td>\
+                   </tr>';
     })
-    calendar.render();
+    markUp += '</tbody></table>';
+    $("#booking-table-container").html(markUp);
+    $("#booking-table").DataTable();
 }
 
-function approveBooking(){
+function approveBooking(idx){
     if(confirm("Are you sure you want to approve this booking?")){
         $.ajax({
             type: "POST",
             url: "approve-booking.php",
             dataType: 'html',
             data: {
-                idx:bookingIdx,
+                idx:idx,
+                name:name
             },
             success: function(response){
                 var resp = response.split("*_*");
                 if(resp[0] == "true"){
                     getBookingList();
-                    $("#view-booking-modal").modal("hide");
-                    //alert(resp[1]);
+                    alert(resp[1]);
                 }else if(resp[0] == "false"){
                     alert(resp[1]);
                 } else{
@@ -189,21 +149,20 @@ function approveBooking(){
     }
 }
 
-function declineBooking(){
+function declineBooking(idx){
     if(confirm("Are you sure you want to decline this booking?")){
         $.ajax({
             type: "POST",
             url: "decline-booking.php",
             dataType: 'html',
             data: {
-                idx:bookingIdx
+                idx:idx
             },
             success: function(response){
                 var resp = response.split("*_*");
                 if(resp[0] == "true"){
                     getBookingList();
-                    $("#view-booking-modal").modal("hide");
-                    //alert(resp[1]);
+                    alert(resp[1]);
                 }else if(resp[0] == "false"){
                     alert(resp[1]);
                 } else{

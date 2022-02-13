@@ -31,10 +31,11 @@ $(document).on('hidden.bs.modal', '.modal', function () {
 
 var baseUrl = $("#base-url").text();
 var bookingIdx;
+var calendar;
 
 getUserDetails();
-getBookingList();
 getChurchList();
+renderCalendar();
 
 function getUserDetails(){
     $.ajax({
@@ -69,17 +70,20 @@ function renderUserDetails(data){
 
 }
 
-function getBookingList(){
+function getBookingList(church){
+    //alert(church);
     $.ajax({
 		type: "POST",
 		url: "get-booking-list.php",
 		dataType: 'html',
 		data: {
-			dummy:"dummy"
+			church:church
 		},
 		success: function(response){
 			var resp = response.split("*_*");
 			if(resp[0] == "true"){
+                calendar.destroy();
+                renderCalendar();
 				renderBookingList(resp[1]);
 			}else if(resp[0] == "false"){
 				alert(resp[1]);
@@ -90,44 +94,71 @@ function getBookingList(){
 	});
 }
 
-function renderBookingList(data){
+function renderBookingList(data){    
+    //alert(data);
     var lists = JSON.parse(data);
-    var markUp = '<table id="booking-table" class="table table-striped table-bordered table-sm">\
-                        <thead>\
-                            <tr>\
-                                <th>Church</th>\
-                                <th>Type</th>\
-                                <th>Date</th>\
-                                <th>Time</th>\
-                                <th>Status</th>\
-                                <th></th>\
-                            </tr>\
-                        </thead>\
-                        <tbody>';
+    var event = {};
     lists.forEach(function(list){
+        var date = new Date(list.date);
+        var d = date.getDate();
+	    var m = date.getMonth();
+	    var y = date.getFullYear();
         var status = list.status;
-        var button = "";
-        if(status == "approved"){
-            status = '<span class="badge badge-success">Approved</span>';
-        }else if(status == "declined"){
-            status = '<span class="badge badge-danger">Declined</span>';
-        }else if(status == "processing"){
-            status = '<span class="badge badge-warning">Processing</span>';
-            button = '<button class="btn btn-success btn-sm" onclick="editBooking(\''+ list.idx +'\')"><i class="fa fa-pencil"></i></button>\
-                      <button class="btn btn-danger btn-sm" onclick="deleteBooking(\''+ list.idx +'\')"><i class="fa fa-trash"></i></button>';
+        var loginIdx = list.loginidx;
+        var userIdx = list.useridx;
+        if(loginIdx == userIdx){
+            if(status == "processing"){
+                event = {
+                    title: list.church,
+                    color: '#f0ad4e',
+                    start: new Date(y,m,d),
+                    allDay: true,
+                    extendedProps: {
+                        idx:list.idx,
+                        type: list.type,
+                        status: list.status
+                    },
+                }
+            }else if(status == "approved"){
+                event = {
+                    title: list.church,
+                    color: '#5cb85c',
+                    start: new Date(y,m,d),
+                    allDay: true,
+                    extendedProps: {
+                        idx:list.idx,
+                        type: list.type,
+                        status: list.status
+                    },
+                }
+            }else if(status == "declined"){
+                event = {
+                    title: list.church,
+                    color: '#d9534f',
+                    start: new Date(y,m,d),
+                    allDay: true,
+                    extendedProps: {
+                        idx:list.idx,
+                        type: list.type,
+                        status: list.status
+                    },
+                }
+            }
+        }else{
+            event = {
+                title: list.name,
+                color: '#C0C0C0',
+                start: new Date(y,m,d),
+                allDay: true,
+                extendedProps: {
+                    idx:"",
+                    type: list.type,
+                    status: list.status
+                },
+            }
         }
-        markUp += '<tr>\
-                        <td>'+list.church+'</td>\
-                        <td>'+list.type+'</td>\
-                        <td>'+list.date+'</td>\
-                        <td>'+list.time+'</td>\
-                        <td>'+status+'</td>\
-                        <td>'+button+'</td>\
-                   </tr>';
-    })
-    markUp += '</tbody></table>';
-    $("#booking-table-container").html(markUp);
-    $("#booking-table").DataTable();
+        calendar.addEvent(event);
+    });
 }
 
 function getChurchList(){
@@ -153,112 +184,114 @@ function getChurchList(){
 
 function renderChurchList(data){
     var lists = JSON.parse(data);
-    var markUp = '<table id="booking-church-table" class="table table-striped table-bordered table-sm">\
-                        <thead>\
-                            <tr>\
-                                <th>Name</th>\
-                                <th>Address</th>\
-                                <th></th>\
-                            </tr>\
-                        </thead>\
-                        <tbody>';
+    var markUp = '<div class="input-group input-group-sm float-right w-25">\
+                    <div class="input-group-prepend input-group-sm">\
+                        <span class="input-group-text bg-success">Church</span>\
+                    </div>\
+                    <select class="form-control" id="booking-church" onchange="churchSelectChanged()">';
     lists.forEach(function(list){
-        markUp += '<tr>\
-                        <td>'+list.name+'</td>\
-                        <td>'+list.address+'</td>\
-                        <td>\
-                            <button class="btn btn-success btn-sm" onclick="churchSelected(\''+ list.idx +'\',\''+list.name+'\')"><i class="fa fa-check"></i></button>\
-                        </td>\
-                   </tr>';
+        markUp += '<option value="'+list.idx+'">'+list.name+'</option>';
     })
-    markUp += '</tbody></table>';
-    $("#booking-church-table-container").html(markUp);
-    $("#booking-church-table").DataTable();
+    markUp += '</select></div>';
+    $("#church-select-container").html(markUp);
+    churchSelectChanged();
 }
 
-function addBooking(){
-    bookingIdx = "";
-    $("#add-edit-booking-modal-title").text("Add New Booking");
-    $("#add-edit-booking-modal").modal("show");
+function churchSelectChanged(){
+    var church = $("#booking-church").val();
+    getBookingList(church);
 }
 
-function loadChurchList(){
-    $("#church-select-modal").modal("show");
-}
+function renderCalendar(){
+    var calendarContainer = document.getElementById("calendar");
 
-function churchSelected(idx,name){
-    $("#church-select-modal").modal("hide");
-    $("#booking-church").val(name);
-    $("#booking-churchidx").val(idx);
-}
-
-function editBooking(idx){
-    bookingIdx = idx;
-    $.ajax({
-        type: "POST",
-        url: "get-booking-detail.php",
-        dataType: 'html',
-        data: {
-            idx:bookingIdx
-        },
-        success: function(response){
-            var resp = response.split("*_*");
-            if(resp[0] == "true"){
-                renderEditBooking(resp[1]);
-            }else if(resp[0] == "false"){
-                alert(resp[1]);
-            } else{
-                alert(response);
+    calendar = new FullCalendar.Calendar(calendarContainer,{
+        selectable: true,
+        select: function(arg){
+            var church = $("#booking-church").val();
+            calendar.unselect();
+            if(church != "all"){
+                addBooking(arg["start"],church);
+            }else{
+                alert("Please select church!");
             }
-        }
-    });
+        },
+        eventClick: function(arg){
+            var idx = arg.event.extendedProps.idx;
+            if(idx == ""){
+                alert("You cannot view or edit this booking!");
+            }else{
+                bookingIdx = idx;
+                $("#view-church").val(arg.event.title);
+                $("#view-type").val(arg.event.extendedProps.type);
+                $("#view-status").val(arg.event.extendedProps.status);
+                $("#view-booking-modal").modal("show");
+            }
+        },
+    })
+    calendar.render();
 }
 
-function renderEditBooking(data){
-    var lists = JSON.parse(data);
-    lists.forEach(function(list){
-        $("#booking-churchidx").val(list.churchidx);
-        $("#booking-church").val(list.church);
-        $("#booking-type").val(list.type);
-        $("#booking-date").val(list.date);
-        $("#booking-time").val(list.time);
-    })
-    $("#add-edit-booking-modal-title").text("Edit Booking");
-    $("#add-edit-booking-modal").modal("show");
+function addBooking(date,church){
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+    var bookDate = y+'-'+(m+1)+'-'+d;
+    var currDate = new Date();
+    date.setDate(date.getDate() + 1);
+
+    if(date > currDate){
+        $.ajax({
+            type: "POST",
+            url: "check-booking.php",
+            dataType: 'html',
+            data: {
+                date:bookDate,
+                church:church
+            },
+            success: function(response){
+                var resp = response.split("*_*");
+                if(resp[0] == "true"){
+                    $("#booking-date").val(bookDate);
+                    $("#add-edit-booking-modal-title").text("Add New Booking");
+                    $("#add-edit-booking-modal").modal("show");
+                }else if(resp[0] == "false"){
+                    alert(resp[1]);
+                } else{
+                    alert(response);
+                }
+            }
+        });
+    }else{
+        alert("Booking to an earlier date is not allowed!");
+    }
 }
 
 function saveBooking(){
-    var churchIdx = $("#booking-churchidx").val();
+    var church = $("#booking-church").val();
     var type = $("#booking-type").val();
     var date = $("#booking-date").val();
-    var time = $("#booking-time").val();
     var error = "";
 
-    if(churchIdx == "" || churchIdx == undefined){
-        error = "*Please select church to visit";
+    if(church == "all"){
+        error = "*Please select church!";
     }else if(type == "" || type == undefined){ 
         error = "*Please select a type of visit";
-    }else if(date == "" || date == undefined){
-        error = "*Date field should not be empty!";
-    }else if(time == "" || time == undefined){
-        error = "*Time field should not be empty!";
     }else{
         $.ajax({
             type: "POST",
             url: "save-booking.php",
             dataType: 'html',
             data: {
-                idx:bookingIdx,
-                churchidx:churchIdx,
+                church:church,
                 type:type,
-                date:date,
-                time:time
+                date:date
             },
             success: function(response){
                 var resp = response.split("*_*");
                 if(resp[0] == "true"){
                     $("#add-edit-booking-modal").modal("hide");
-                    getBookingList();
+                    getBookingList(church);
                 }else if(resp[0] == "false"){
                     alert(resp[1]);
                 } else{
@@ -271,19 +304,21 @@ function saveBooking(){
     $("#add-edit-booking-modal-error").text(error);
 }
 
-function deleteBooking(idx){
+function deleteBooking(){
     if(confirm("Are you sure you want to delete this booking?\nThis action cannot be undone.")){
         $.ajax({
             type: "POST",
             url: "delete-booking.php",
             dataType: 'html',
             data: {
-                idx:idx,
+                idx:bookingIdx,
             },
             success: function(response){
                 var resp = response.split("*_*");
                 if(resp[0] == "true"){
-                    getBookingList();
+                    $("#view-booking-modal").modal("hide");
+                    var church = $("#booking-church").val();
+                    getBookingList(church);
                 }else if(resp[0] == "false"){
                     alert(resp[1]);
                 } else{

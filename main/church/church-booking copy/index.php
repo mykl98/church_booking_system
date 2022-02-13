@@ -31,8 +31,6 @@
     <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/adminlte/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Calendar -->
-    <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/calendar/main.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="<?php echo $baseUrl;?>/system/plugin/googlefont/css/googlefont.min.css" rel="stylesheet">
 </head>
@@ -102,8 +100,10 @@
                             <div class="card-header">
                                 <h3 class="card-title">Booking List</h3>
                             </div>
-                            <div class="card-body pt-2">
-                                <div id='calendar'></div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div id="booking-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -114,41 +114,6 @@
         </footer>
     </div>
     <!-- ./wrapper -->
-
-    <!-- View Booking Modal -->
-    <div class="modal fade" id="view-booking-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Booking Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="view-name" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" id="view-name" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="view-type" class="col-form-label">Type:</label>
-                            <input type="text" class="form-control" id="view-type" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="view-status" class="col-form-label">Status:</label>
-                            <input type="text" class="form-control" id="view-status" readonly>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="approveBooking()">Approve</button>
-                    <button type="button" class="btn btn-danger" onclick="declineBooking()">Decline</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 <!-- Logout Modal -->
     <div class="modal fade" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -184,8 +149,6 @@
 <script src="<?php echo $baseUrl;?>/system/plugin/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!--Datatables-->
 <script src="<?php echo $baseUrl;?>/system/plugin/datatables/js/dataTables.bootstrap4.min.js"></script>
-<!--Calendar-->
-<script src="<?php echo $baseUrl;?>/system/plugin/calendar/main.min.js"></script>
 
 <!-- Page Level Script -->
 <script src="script.js"></script>

@@ -13,7 +13,6 @@ if(isset($_POST)){
                     $value = new \StdClass();
                     $value -> idx = $row["idx"];
                     $value -> name = $row["name"];
-                    $value -> address = $row["address"];
                     array_push($data,$value);
                 }
             }

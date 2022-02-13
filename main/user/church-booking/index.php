@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/adminlte/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Calendar -->
+    <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/calendar/main.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="<?php echo $baseUrl;?>/system/plugin/googlefont/css/googlefont.min.css" rel="stylesheet">
 </head>
@@ -98,13 +100,10 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Booking List</h3>
-                                <button class="btn btn-sm bg-success float-right" onclick="addBooking()"><span class="fa fa-plus"></span> Add Booking</button>
+                                <div id="church-select-container"></div>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <div id="booking-table-container"></div>
-                                </div>
+                            <div class="card-body pt-2">
+                                <div id='calendar'></div>
                             </div>
                         </div>
                     </div>
@@ -128,29 +127,17 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <label for="booking-church" class="col-form-label">Church:</label>
-                        <div class="input-group">
-                            <input type="hidden" id="booking-churchidx">
-                            <input type="text" id="booking-church" class="form-control mt-0" readonly>
-                            <div class="input-group-append">
-                                <button type="button" class="input-group-text bg-success" onclick="loadChurchList()"><i class="fa fa-search"></i></button>
-                            </div>
+                        <div class="form-group">
+                            <label for="booking-date" class="col-form-label">Date:</label>
+                            <input type="text" class="form-control" id="booking-date" readonly>
                         </div>
                         <div class="form-group">
                             <label for="booking-type" class="col-form-label">Type:</label>
                             <select class="form-control" id="booking-type">
-                                <option value="Mass">Mass</option>
+                                <option value="Wedding">Wedding</option>
                                 <option value="Baptismal">Baptismal</option>
                                 <option value="Burial">Burial</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="booking-date" class="col-form-label">Date:</label>
-                            <input type="date" class="form-control" min="<?php echo $minDate;?>" id="booking-date">
-                        </div>
-                        <div class="form-group">
-                            <label for="booking-time" class="col-form-label">Time:</label>
-                            <input type="time" class="form-control" id="booking-time">
                         </div>
                     </form>
                     <p id="add-edit-booking-modal-error" class="text-danger font-italic small"></p>
@@ -158,6 +145,40 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="saveBooking()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Booking Modal -->
+    <div class="modal fade" id="view-booking-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Booking Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="view-church" class="col-form-label">Church:</label>
+                            <input type="text" class="form-control" id="view-church" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="view-type" class="col-form-label">Type:</label>
+                            <input type="text" class="form-control" id="view-type" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="view-status" class="col-form-label">Status:</label>
+                            <input type="text" class="form-control" id="view-status" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteBooking()">Delete</button>
                 </div>
             </div>
         </div>
@@ -204,8 +225,6 @@
 <!-- jQuery -->
 <script src="<?php echo $baseUrl;?>/system/plugin/jquery/js/jquery.min.js"></script>
 <script src="<?php echo $baseUrl;?>/system/plugin/jquery/js/jquery.dataTables.min.js"></script>
-<!--Popper JS-->
-<script src="<?php echo $baseUrl;?>/system/plugin/popper/js/popper.min.js"></script>
 <!--Bootstrap-->
 <script src="<?php echo $baseUrl;?>/system/plugin/bootstrap/js/bootstrap.min.js"></script>
 <!-- Admin LTE -->
@@ -214,8 +233,11 @@
 <script src="<?php echo $baseUrl;?>/system/plugin/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!--Datatables-->
 <script src="<?php echo $baseUrl;?>/system/plugin/datatables/js/dataTables.bootstrap4.min.js"></script>
+<!--Calendar-->
+<script src="<?php echo $baseUrl;?>/system/plugin/calendar/main.min.js"></script>
 
 <!-- Page Level Script -->
 <script src="script.js"></script>
+<!--script src="calendar.js"></script-->
 </body>
 </html>
