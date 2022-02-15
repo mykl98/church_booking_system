@@ -47,6 +47,7 @@
                         $value -> church = getChurchName($row["churchidx"]);
                         $value -> type = $row["type"];
                         $value -> date = $row["date"];
+                        $value -> time = $row["time"];
                         $value -> status = $row["status"];
                         array_push($data,$value);
                     }

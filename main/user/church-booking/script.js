@@ -116,7 +116,8 @@ function renderBookingList(data){
                     extendedProps: {
                         idx:list.idx,
                         type: list.type,
-                        status: list.status
+                        status: list.status,
+                        time: list.time
                     },
                 }
             }else if(status == "approved"){
@@ -128,7 +129,8 @@ function renderBookingList(data){
                     extendedProps: {
                         idx:list.idx,
                         type: list.type,
-                        status: list.status
+                        status: list.status,
+                        time: list.time
                     },
                 }
             }else if(status == "declined"){
@@ -140,7 +142,8 @@ function renderBookingList(data){
                     extendedProps: {
                         idx:list.idx,
                         type: list.type,
-                        status: list.status
+                        status: list.status,
+                        time: list.time
                     },
                 }
             }
@@ -170,6 +173,7 @@ function getChurchList(){
 			dummy:"dummy"
 		},
 		success: function(response){
+            //alert(response);
 			var resp = response.split("*_*");
 			if(resp[0] == "true"){
 				renderChurchList(resp[1]);
@@ -183,6 +187,7 @@ function getChurchList(){
 }
 
 function renderChurchList(data){
+    //alert(data);
     var lists = JSON.parse(data);
     var markUp = '<div class="input-group input-group-sm float-right w-25">\
                     <div class="input-group-prepend input-group-sm">\
@@ -223,9 +228,11 @@ function renderCalendar(){
             }else{
                 bookingIdx = idx;
                 $("#view-church").val(arg.event.title);
+                $("#view-time").val(arg.event.extendedProps.time);
                 $("#view-type").val(arg.event.extendedProps.type);
                 $("#view-status").val(arg.event.extendedProps.status);
                 $("#view-booking-modal").modal("show");
+                //alert(arg.event.extendedProps.time);
             }
         },
     })
@@ -271,6 +278,7 @@ function saveBooking(){
     var church = $("#booking-church").val();
     var type = $("#booking-type").val();
     var date = $("#booking-date").val();
+    var time = $("#booking-time").val();
     var error = "";
 
     if(church == "all"){
@@ -285,7 +293,8 @@ function saveBooking(){
             data: {
                 church:church,
                 type:type,
-                date:date
+                date:date,
+                time:time
             },
             success: function(response){
                 var resp = response.split("*_*");

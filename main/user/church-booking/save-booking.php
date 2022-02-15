@@ -2,10 +2,10 @@
     if($_POST){
         include_once "../../../system/backend/config.php";
 
-        function saveBooking($userIdx,$churchIdx,$type,$date){
+        function saveBooking($userIdx,$churchIdx,$type,$date,$time){
             global $conn;
             $table = "booking";
-            $sql = "INSERT INTO `$table` (churchidx,useridx,type,date,status) VALUES ('$churchIdx','$userIdx','$type','$date','processing')";
+            $sql = "INSERT INTO `$table` (churchidx,useridx,type,date,time,status) VALUES ('$churchIdx','$userIdx','$type','$date','$time','processing')";
             if(mysqli_query($conn,$sql)){
                 return "true*_*";
             }else{
@@ -19,8 +19,9 @@
             $churchIdx = sanitize($_POST["church"]);
             $type = sanitize($_POST["type"]);
             $date = sanitize($_POST["date"]);
-            if(!empty($churchIdx) && !empty($type) && !empty($date)){
-                echo saveBooking($userIdx,$churchIdx,$type,$date);
+            $time = sanitize($_POST["time"]);
+            if(!empty($churchIdx) && !empty($type) && !empty($date) && !empty($time)){
+                echo saveBooking($userIdx,$churchIdx,$type,$date,$time);
             }else{
                 echo "Network Error!";
             }

@@ -2,9 +2,11 @@
     include_once "../../../system/backend/config.php";
     session_start();
     $idx = $_SESSION["loginidx"];
+    $date = date("Y-m-d");
+    $month = date("Y-m");
 
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "user"){
-        $minDate = date("Y-m-d");
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+        
     }else{
         session_destroy();
         header("location:".$baseUrl."/index.php");
@@ -17,7 +19,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>User | Church Bookings</title>
+    <title>Church | Reports</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -31,8 +33,6 @@
     <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/adminlte/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Calendar -->
-    <link rel="stylesheet" href="<?php echo $baseUrl;?>/system/plugin/calendar/main.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="<?php echo $baseUrl;?>/system/plugin/googlefont/css/googlefont.min.css" rel="stylesheet">
 </head>
@@ -51,7 +51,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <p id="global-user-name" class="mr-2 mt-2">Michael Martin G. Abellana</p>
-                    <p id="base-url" class="d-none"><?php echo $baseUrl;?></p>
+                    <p id="base-url" class="d-none"><?php echo $baseUrl?></p>
                 </li>
                 <li class="nav-item">
                     <a class="" data-toggle="dropdown" href="#">
@@ -71,7 +71,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p class="">User</p>
+                <p id="global-department-name" class="">Church</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>
@@ -83,12 +83,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Church Bookings</h1>
+                            <h1 class="m-0 text-dark">Reports</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="<?php echo $baseUrl;?>">Home</a></li>
-                                <li class="breadcrumb-item active">Church Bookings</li>
+                                <li class="breadcrumb-item active">Reports</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -100,10 +100,35 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <div id="church-select-container"></div>
+                                <div class="form-group float-left">
+                                    <select class="form-control" id="report-type" onchange="reportTypeChange()">
+                                        <option value="all">All</option>
+                                        <option value="yearly">Yearly</option>
+                                        <option value="monthly">monthly</option>
+                                        <option value="daily">Daily</option>
+                                    </select>
+                                </div>
+                                <div id="report-year-container" class="form-group float-left ml-2" style="display:none;">
+                                    <select class="form-control" id="report-year" onchange="reportYearChange()">
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                </div>
+                                <div id="report-month-container" class="form-group float-left ml-2" style="display:none;">
+                                    <input type="month" class="form-control" id="report-month" value="<?php echo $month;?>" onchange="reportMonthChange()">
+                                </div>
+                                <div id="report-date-container" class="form-group float-left ml-2" style="display:none;">
+                                    <input type="date" class="form-control" id="report-date" value="<?php echo $date;?>" onchange="reportDateChange()">
+                                </div>
                             </div>
-                            <div class="card-body pt-2">
-                                <div id='calendar'></div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div id="report-table-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -115,101 +140,60 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- Add Edit Booking Modal -->
-    <div class="modal fade" id="add-edit-booking-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modals -->
+    <!-- Manage Department Modals -->
+    <div class="modal fade" id="qr-scan-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="add-edit-booking-modal-title">Add New Booking</h5>
+                    <h5 class="modal-title">Scan QR Code</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="form-group">
-                            <label for="booking-date" class="col-form-label">Date:</label>
-                            <input type="text" class="form-control" id="booking-date" readonly>
+                        <div align="center">
+                            <img class="rounded-circle" id="qr-image" width="150" src="<?php echo $baseUrl;?>/system/images/blank-profile.png">
                         </div>
                         <div class="form-group">
-                            <label for="booking-time" class="col-form-label">Time:</label>
-                            <input type="time" class="form-control" id="booking-time">
+                            <label for="qr-name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="qr-name" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="booking-type" class="col-form-label">Type:</label>
-                            <select class="form-control" id="booking-type">
-                                <option value="Wedding">Wedding</option>
-                                <option value="Baptismal">Baptismal</option>
-                                <option value="Burial">Burial</option>
-                            </select>
+                            <label for="qr-address" class="col-form-label">Address:</label>
+                            <textarea class="form-control" id="qr-address" readonly></textarea>
                         </div>
+                        <!--div id="qr-booking-table-container"></div-->
+                        <p id="qr-scan-modal-error" class="text-danger font-italic small"></p>
                     </form>
-                    <p id="add-edit-booking-modal-error" class="text-danger font-italic small"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveBooking()">Save</button>
+                    <button type="button" class="btn btn-danger" onclick="qrLogout()">Logout</button>
+                    <button type="button" class="btn btn-success" onclick="qrLogin()">Login</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- View Booking Modal -->
-    <div class="modal fade" id="view-booking-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- QR Reader Modal -->
+    <div class="modal fade" id="qr-reader-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Booking Details</h5>
+                    <h5 class="modal-title text-secondary">Scan QR Code</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="view-church" class="col-form-label">Church:</label>
-                            <input type="text" class="form-control" id="view-church" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="view-time" class="col-form-label">Time:</label>
-                            <input type="time" class="form-control" id="view-time" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="view-type" class="col-form-label">Type:</label>
-                            <input type="text" class="form-control" id="view-type" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="view-status" class="col-form-label">Status:</label>
-                            <input type="text" class="form-control" id="view-status" readonly>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteBooking()">Delete</button>
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <div id="qr-reader" style="width:500px"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Church Select Modal -->
-    <div class="modal fade" id="church-select-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Select Church</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="booking-church-table-container"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Logout Modal -->
+    <!-- Logout Modal -->
     <div class="modal fade" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -233,6 +217,8 @@
 <!-- jQuery -->
 <script src="<?php echo $baseUrl;?>/system/plugin/jquery/js/jquery.min.js"></script>
 <script src="<?php echo $baseUrl;?>/system/plugin/jquery/js/jquery.dataTables.min.js"></script>
+<!--Popper JS-->
+<script src="<?php echo $baseUrl;?>/system/plugin/popper/js/popper.min.js"></script>
 <!--Bootstrap-->
 <script src="<?php echo $baseUrl;?>/system/plugin/bootstrap/js/bootstrap.min.js"></script>
 <!-- Admin LTE -->
@@ -241,11 +227,10 @@
 <script src="<?php echo $baseUrl;?>/system/plugin/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!--Datatables-->
 <script src="<?php echo $baseUrl;?>/system/plugin/datatables/js/dataTables.bootstrap4.min.js"></script>
-<!--Calendar-->
-<script src="<?php echo $baseUrl;?>/system/plugin/calendar/main.min.js"></script>
+<!--QR Scanner-->
+<script src="<?php echo $baseUrl;?>/system/plugin/qr-scanner/qr-scanner.min.js"></script>
 
 <!-- Page Level Script -->
 <script src="script.js"></script>
-<!--script src="calendar.js"></script-->
 </body>
 </html>
